@@ -10,10 +10,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 train_loader, val_loader, test_loader = get_dataloaders(batch_size = 8, max_length=70, split=0.8, max_data=1000)
 
-# Init model, loss function, optimizer
-model = RNA_net(embedding_dim=64)
-model.to(device)
-criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([300]))
+model = RNA_net(embedding_dim=64).to(device)
+
+criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([300])).to(device)
+
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 # Training loop
@@ -21,7 +21,7 @@ train_losses = []
 valid_losses = []
 f1s_train = []
 f1s_valid = []
-for epoch in range(10):
+for epoch in range(20):
 
     loss_train = 0.0
     f1_train = 0.0
@@ -30,8 +30,8 @@ for epoch in range(10):
 
     for batch in train_loader:
 
-        x = batch["sequence"].to(device)  # (N, L)
-        y = batch['structure'].to(device)  # (N, L, L)
+        x = batch["sequence"].to(device) # (N, L)
+        y = batch['structure'].to(device) # (N, L, L)
 
         y_pred = model(x)
 
@@ -45,8 +45,8 @@ for epoch in range(10):
         f1_train += compute_f1(y_pred, y)
 
     for batch in val_loader:
-        x = batch["sequence"].to(device)  # (N, L)
-        y = batch['structure'].to(device)  # (N, L, L)
+        x = batch["sequence"].to(device) # (N, L)
+        y = batch['structure'].to(device) # (N, L, L)
 
         y_pred = model(x)
 
@@ -62,15 +62,12 @@ for epoch in range(10):
     f1s_valid.append(f1_valid/len(val_loader))
 
     print(f"Epoch {epoch}, F1 train: {f1s_train[-1]:.2f}, F1 valid: {f1s_valid[-1]:.2f}")
-
-
-# Validation loop
-
+    
 # Test loop
 structures = []
 for sequence in test_loader[1]:
     # Replace with your model prediction !
-    structure = (model(sequence.unsqueeze(0)).squeeze(0)>0.5).type(torch.int) # Has to be shape (L, L) ! 
+    structure = (model(sequence.to(device).unsqueeze(0)).squeeze(0)>0.5).type(torch.int) # Has to be shape (L, L) ! 
     structures.append(structure)
 
 format_submission(test_loader[0], test_loader[1], structures, 'test_pred.csv')
