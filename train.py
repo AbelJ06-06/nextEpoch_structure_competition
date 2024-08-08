@@ -12,7 +12,7 @@ train_loader, val_loader, test_loader = get_dataloaders(batch_size = 8, max_leng
 
 # Init model, loss function, optimizer
 model = RNA_net(embedding_dim=64).to(device)
-criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([300])).to(device)
+criterion = nn.BCELoss(weight=torch.tensor([300])).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 # Training loop
