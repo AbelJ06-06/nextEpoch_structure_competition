@@ -62,7 +62,7 @@ for epoch in range(20):
     f1s_valid.append(f1_valid/len(val_loader))
 
     scheduler.step(loss_valid)
-    current_lr = get_last_lr()
+    current_lr = optimizer.get_last_lr()
 
     print(f"Epoch {epoch}, F1 train: {f1s_train[-1]:.2f}, F1 valid: {f1s_valid[-1]:.2f}, lr: {current_lr:.6f}")
 
