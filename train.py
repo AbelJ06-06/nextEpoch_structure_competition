@@ -62,14 +62,6 @@ for epoch in range(20):
 
     print(f"Epoch {epoch}, F1 train: {f1s_train[-1]:.2f}, F1 valid: {f1s_valid[-1]:.2f}")
 
-import matplotlib.pyplot as plt
-plt.subplot(1,2,1)
-plt.plot(train_losses)
-plt.plot(valid_losses)
-
-plt.subplot(1,2,2)
-plt.plot(f1s_train)
-plt.plot(f1s_valid)
     
 # Test loop
 structures = []
@@ -79,3 +71,12 @@ for sequence in test_loader[1]:
     structures.append(structure)
 
 format_submission(test_loader[0], test_loader[1], structures, 'test_pred.csv')
+
+import matplotlib.pyplot as plt
+plt.subplot(1,2,1)
+plt.plot(train_losses)
+plt.plot(valid_losses)
+
+plt.subplot(1,2,2)
+plt.plot(f1s_train)
+plt.plot(f1s_valid)
