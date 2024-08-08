@@ -72,11 +72,11 @@ for sequence in test_loader[1]:
 
 format_submission(test_loader[0], test_loader[1], structures, 'test_pred.csv')
 
-import matplotlib.pyplot as plt
-plt.subplot(1,2,1)
-plt.plot(train_losses)
-plt.plot(valid_losses)
+# import matplotlib.pyplot as plt
+# plt.subplot(1,2,1)
+# plt.plot(train_losses)
+# plt.plot(valid_losses)
 
-plt.subplot(1,2,2)
-plt.plot(f1s_train)
-plt.plot(f1s_valid)
+# plt.subplot(1,2,2)
+# plt.plot(f1s_train)
+# plt.plot(f1s_valid)
