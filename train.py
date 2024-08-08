@@ -64,7 +64,7 @@ for epoch in range(20):
     scheduler.step(loss_valid)
     current_lr = scheduler.get_last_lr()
 
-    print(f"Epoch {epoch}, F1 train: {f1s_train[-1]:.2f}, F1 valid: {f1s_valid[-1]:.2f}, lr: {current_lr:.6f}")
+    print(f"Epoch {epoch}, F1 train: {f1s_train[-1]:.2f}, F1 valid: {f1s_valid[-1]:.2f}, {current_lr}")
 
     
 # Test loop
