@@ -15,13 +15,13 @@ train_loader, val_loader, test_loader = get_dataloaders(batch_size = 8, max_leng
 model = RNA_net(embedding_dim=64).to(device)
 criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([300])).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5, min_lr=0.0001)
+scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=8, min_lr=0.0001)
 # Training loop
 train_losses = []
 valid_losses = []
 f1s_train = []
 f1s_valid = []
-for epoch in range(20):
+for epoch in range(25):
 
     loss_train = 0.0
     f1_train = 0.0
