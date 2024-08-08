@@ -8,7 +8,7 @@ import torch.nn as nn
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-train_loader, val_loader, test_loader = get_dataloaders(batch_size = 16, max_length=100, split=0.8, max_data=1000)
+train_loader, val_loader, test_loader = get_dataloaders(batch_size = 32, max_length=100, split=0.8, max_data=1000)
 
 # Init model, loss function, optimizer
 model = RNA_net(embedding_dim=64).to(device)
