@@ -1,3 +1,4 @@
+
 from src.data import get_dataloaders
 from src.model import RNA_net
 from src.util import compute_f1, compute_precision, compute_recall, plot_structures
@@ -15,13 +16,13 @@ train_loader, val_loader, test_loader = get_dataloaders(batch_size = 8, max_leng
 model = RNA_net(embedding_dim=64).to(device)
 criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([300])).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-# scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=8, min_lr=0.0001)
+scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.3, patience=14, min_lr=0.0001)
 # Training loop
 train_losses = []
 valid_losses = []
 f1s_train = []
 f1s_valid = []
-for epoch in range(25):
+for epoch in range(20):
 
     loss_train = 0.0
     f1_train = 0.0
@@ -61,10 +62,10 @@ for epoch in range(25):
     f1s_train.append(f1_train/len(train_loader))
     f1s_valid.append(f1_valid/len(val_loader))
 
-    # scheduler.step(loss_valid)
-    # current_lr = scheduler.get_last_lr() , {current_lr}
+    scheduler.step(loss_valid)
+    current_lr = scheduler.get_last_lr() 
 
-    print(f"Epoch {epoch}, F1 train: {f1s_train[-1]:.2f}, F1 valid: {f1s_valid[-1]:.2f}")
+    print(f"Epoch {epoch}, F1 train: {f1s_train[-1]:.2f}, F1 valid: {f1s_valid[-1]:.2f}, lr: {current_lr[0]}")
 
     
 # Test loop
@@ -76,11 +77,11 @@ for sequence in test_loader[1]:
 
 format_submission(test_loader[0], test_loader[1], structures, 'test_pred.csv')
 
-# import matplotlib.pyplot as plt
-# plt.subplot(1,2,1)
-# plt.plot(train_losses)
-# plt.plot(valid_losses)
+import matplotlib.pyplot as plt
+plt.subplot(1,2,1)
+plt.plot(train_losses, color ='red')
+plt.plot(valid_losses, color ='black')
 
-# plt.subplot(1,2,2)
-# plt.plot(f1s_train)
-# plt.plot(f1s_valid)
+plt.subplot(1,2,2)
+plt.plot(f1s_train, color ='red')
+plt.plot(f1s_valid, color ='black')
